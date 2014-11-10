@@ -275,12 +275,16 @@ class InlineStyle
         $parsed = array();
         $stylesheet = $this->_stripStylesheet($stylesheet);
         $stylesheet = trim(trim($stylesheet), "}");
-        foreach(explode("}", $stylesheet) as $rule) {
+        foreach (explode("}", $stylesheet) as $rule) {
             //Don't parse empty rules
-        	if(!trim($rule))continue;
-        	list($selector, $style) = explode("{", $rule, 2);
-            foreach (explode(',', $selector) as $sel) {
-                $parsed[] = array(trim($sel), trim(trim($style), ";"));
+            if (!trim($rule)) continue;
+            $res = explode("{", $rule, 2);
+            // make sure explode contains 2 values
+            if (count($res) == 2) {
+                list($selector, $style) = $res;
+                foreach (explode(',', $selector) as $sel) {
+                    $parsed[] = array(trim($sel), trim(trim($style), ";"));
+                }
             }
         }
 
